@@ -15,10 +15,17 @@ class Search extends Component {
   }
 
   onTextChange = (e) =>{
-    this.setState({[e.target.name]: e.target.value}, () =>{
-      axios.get(`${this.state.apiUrl}/collection?q=${this.state.searchText}&key=${this.state.apiKey}&ps=${this.state.amount}&format=json`)
+    const val = e.target.value;
+
+    this.setState({[e.target.name]: val}, () =>{
+      if(val === ''){
+        this.setState({results:[]});
+      }else{
+        axios.get(`${this.state.apiUrl}/collection?q=${this.state.searchText}&key=${this.state.apiKey}&ps=${this.state.amount}&format=json`)
       .then(res => this.setState({results: res.data.artObjects}))
       .catch(err => console.log(err));
+      }
+      
     });
   }
 

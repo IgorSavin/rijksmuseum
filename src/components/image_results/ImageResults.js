@@ -7,42 +7,67 @@ import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 
 class ImageResults extends Component {
-  render() {
-    let imageListContent;
-    const {results} = this.props;
+  state = {
+    open: false,
+    currentImg: ''
+  }
 
-    if(results) {
-      imageListContent =(
+  handleOpen = rslt => {
+    this.setState({ open: true, currentImg: rslt })
+  }
+
+  handleClose = () => {
+    this.setState({ open: false })
+  }
+
+  render() {
+    let imageListContent
+    const { results } = this.props
+
+    if (results) {
+      imageListContent = (
         <GridList cols={3}>
-        {results.map(rslt =>(
-          <GridTile
-          title={rslt.title}
-          key={rslt.id}
-          ationIcon={
-            <IconButton>
-              <ZoomIn color="white"/>
-            </IconButton>
-          }
-          >
-            <img src={rslt.webImage.url} alt=""/>
-          </GridTile>
-        ))}
+          {results.map(rslt => (
+            <GridTile
+              title={rslt.title}
+              key={rslt.id}
+              actionIcon={
+                <IconButton onClick={this.handleOpen}>
+                  <ZoomIn color="white" />
+                </IconButton>
+              }
+            >
+              <img src={rslt.webImage.url} alt="" style={{ width: '25%' }} />
+            </GridTile>
+          ))}
         </GridList>
       )
-    }else{
-      imageListContent = null;
+    } else {
+      imageListContent = null
     }
+
+    const actions = [
+      <FlatButton label="Close" primary={true} onClick={this.handleClose} />
+    ]
 
     return (
       <div>
         {imageListContent}
+        <Dialog
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+        >
+          <img src={this.state.currentImg} alt="" style={{ width: '100%' }} />
+        </Dialog>
       </div>
     )
   }
 }
 
-ImageResults.propTypes ={
+ImageResults.propTypes = {
   results: PropTypes.array.isRequired
 }
 
-export default ImageResults;
+export default ImageResults
