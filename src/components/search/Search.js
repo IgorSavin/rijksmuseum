@@ -21,7 +21,7 @@ class Search extends Component {
       if(val === ''){
         this.setState({results:[]});
       }else{
-        axios.get(`${this.state.apiUrl}/collection?q=${this.state.searchText}&key=${this.state.apiKey}&ps=${this.state.amount}&format=json`)
+        axios.get(`${this.state.apiUrl}/collection?q=${this.state.searchText}&key=${this.state.apiKey}&ps=${this.state.amount}&imgonly=true&format=json`)
       .then(res => this.setState({results: res.data.artObjects}))
       .catch(err => console.log(err));
       }
